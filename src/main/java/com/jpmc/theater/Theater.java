@@ -10,21 +10,18 @@ import java.util.concurrent.TimeUnit;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.*;
-import java.time.format.DateTimeFormatter;
 
 public class Theater {
 
     LocalDateProvider provider;
     private List<Showing> schedule;
-    DateTimeFormatter formatter;
+    //DateTimeFormatter formatter;
     
     public Theater(LocalDateProvider provider) {
         this.provider = provider;
-        this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
     
-    public void loadSchedule(List<Showing> showings) {
-    	
+    public void loadSchedule(List<Showing> showings) {    	
     	this.schedule = new ArrayList<Showing>(showings);
     }
 
@@ -45,10 +42,10 @@ public class Theater {
        
         schedule.forEach(s ->
                 System.out.println(s.getSequenceOfTheDay() + ": " + 
-                                   s.getStartTime().format(formatter) + " " + 
-                		           s.getMovie().getTitle() + " " + 
-                                   humanReadableFormat(s.getMovie().getRunningTime()) + 
-                                   String.format(" $%.2f", s.getFee()))
+                                   s.getStartTime().format(provider.getFormatter()) + "\t" + 
+                		           s.getMovie().getTitle() + "\t" + 
+                                   humanReadableFormat(s.getMovie().getRunningTime()) + "\t" + 
+                                   String.format("$%.2f", s.getFee()))
         );
         System.out.println("===================================================");
     }
@@ -63,7 +60,7 @@ public class Theater {
         for(Showing s : schedule) {
         	JSONObject obj = new JSONObject();
             obj.put("sequence_of_the_day", s.getSequenceOfTheDay());
-            obj.put("start_time", s.getStartTime().format(formatter)); 
+            obj.put("start_time", s.getStartTime().format(provider.getFormatter())); 
             obj.put("title", s.getMovie().getTitle());
             obj.put("running_time", humanReadableFormat(s.getMovie().getRunningTime()));
             obj.put("price", String.format("$%.2f",s.getMovie().getTicketPrice()));
@@ -91,6 +88,7 @@ public class Theater {
         }
     }
  
+    
     public List<Showing> getTodayShows(String inputJsonStr) throws ParseException {
         List<Showing> showingList = new ArrayList<Showing>();
         JSONParser parser = new JSONParser();
@@ -129,7 +127,7 @@ public class Theater {
             
         }
         catch(ParseException pe) {
-        	pe.printStackTrace();
+        	System.out.println("Input JSON string is not formatted correctly.");
         	throw pe;
         }
         catch(Exception e) {
@@ -168,4 +166,6 @@ public class Theater {
         theater.printSchedule();
         theater.printScheduleJson();
     }
+    
+    
 }

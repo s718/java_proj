@@ -35,7 +35,7 @@ public class Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(customer.toString(), showing.getMovie().getTitle(), audienceCount);
+        return Objects.hash(customer.toString(), showing.toString(), audienceCount);
     }
 
     @Override
