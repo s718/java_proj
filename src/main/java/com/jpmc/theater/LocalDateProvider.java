@@ -1,6 +1,7 @@
 package com.jpmc.theater;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class LocalDateProvider {
     private static LocalDateProvider instance = null;
@@ -17,5 +18,10 @@ public class LocalDateProvider {
 
     public LocalDate currentDate() {
             return LocalDate.now();
+    }
+    
+    public LocalTime currentTime() {
+        return LocalTime.now();
+
     }
 }
